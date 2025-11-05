@@ -6,7 +6,7 @@ function App() {
   const [status, setStatus] = useState("loading");
   const [runStatus, setRunStatus] = useState("");
 
-  // ✅ Check backend health
+  // ✅ Check backend health on load
   useEffect(() => {
     fetch(`${API_BASE_URL}/health`)
       .then(async (res) => {
@@ -23,10 +23,12 @@ function App() {
 
   // 🚀 Run Sample Deadlock
   const handleRunDeadlock = async () => {
-    setRunStatus("running");
+    setRunStatus("running...");
     try {
       const result = await runSampleDeadlock();
       setRunStatus(`✅ ${result}`);
+      // 🔗 Auto open your live backend dashboard
+      window.open("https://deadlock-83kw.onrender.com", "_blank");
     } catch (err) {
       setRunStatus(`❌ Failed: ${err.message}`);
     }
@@ -35,7 +37,7 @@ function App() {
   return (
     <div
       style={{
-        backgroundColor: "#0a0a0a",
+        backgroundColor: "#0b0b0b",
         color: "#fff",
         height: "100vh",
         display: "flex",
@@ -43,6 +45,7 @@ function App() {
         alignItems: "center",
         justifyContent: "center",
         fontFamily: "Arial",
+        textAlign: "center",
       }}
     >
       <h1>🧠 Java Deadlock Detection Dashboard</h1>
@@ -51,14 +54,12 @@ function App() {
         style={{
           color: status === "error" ? "#ff4d4d" : "#00ff99",
           marginBottom: "20px",
-          textAlign: "center",
-          maxWidth: "700px",
         }}
       >
         {message}
       </p>
 
-      {/* ✅ This button was missing */}
+      {/* 🚀 The missing button is right here */}
       <button
         onClick={handleRunDeadlock}
         style={{
@@ -66,11 +67,11 @@ function App() {
           border: "none",
           color: "white",
           padding: "12px 28px",
-          borderRadius: "8px",
+          borderRadius: "10px",
           cursor: "pointer",
-          fontSize: "16px",
+          fontSize: "18px",
           fontWeight: "bold",
-          boxShadow: "0 0 10px rgba(255,0,128,0.4)",
+          boxShadow: "0 0 15px rgba(255,0,128,0.4)",
         }}
       >
         🚀 Run Sample Deadlock
@@ -92,4 +93,3 @@ function App() {
 }
 
 export default App;
-
