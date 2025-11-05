@@ -3,24 +3,32 @@ import API_BASE_URL, { runSampleDeadlock } from "./api";
 
 function App() {
   const [message, setMessage] = useState("Connecting to backend...");
-  const [status, setStatus] = useState("");
+  const [status, setStatus] = useState("loading");
+  const [runStatus, setRunStatus] = useState("");
 
-  // 🔌 Check backend connection on load
+  // ✅ Check backend health on load
   useEffect(() => {
     fetch(`${API_BASE_URL}/health`)
-      .then(res => res.text())
-      .then(data => setMessage(`✅ Backend connected: ${data}`))
-      .catch(err => setMessage(`❌ Connection failed: ${err}`));
+      .then(async (res) => {
+        if (!res.ok) throw new Error("Backend not reachable");
+        const data = await res.text();
+        setMessage(`✅ Backend connected: ${data}`);
+        setStatus("connected");
+      })
+      .catch((err) => {
+        setMessage(`❌ Failed to connect: ${err.message}`);
+        setStatus("error");
+      });
   }, []);
 
-  // 🚀 Run sample deadlock
+  // 🚀 Run Sample Deadlock
   const handleRunDeadlock = async () => {
-    setStatus("Starting deadlock simulation...");
+    setRunStatus("running");
     try {
       const result = await runSampleDeadlock();
-      setStatus(`✅ ${result}`);
-    } catch (error) {
-      setStatus(`❌ Failed: ${error.message}`);
+      setRunStatus(`✅ Success: ${result}`);
+    } catch (err) {
+      setRunStatus(`❌ Failed: ${err.message}`);
     }
   };
 
@@ -38,28 +46,49 @@ function App() {
       }}
     >
       <h1>🧠 Java Deadlock Detection Dashboard</h1>
-      <p>{message}</p>
+
+      <p
+        style={{
+          color: status === "error" ? "#ff4d4d" : "#00ff99",
+          marginBottom: "20px",
+          textAlign: "center",
+          maxWidth: "700px",
+        }}
+      >
+        {message}
+      </p>
 
       <button
         onClick={handleRunDeadlock}
         style={{
-          marginTop: "20px",
-          padding: "10px 20px",
-          fontSize: "16px",
-          borderRadius: "8px",
+          backgroundColor: "#ff007f",
           border: "none",
-          backgroundColor: "#e91e63",
           color: "white",
+          padding: "10px 25px",
+          borderRadius: "8px",
           cursor: "pointer",
+          fontSize: "16px",
+          fontWeight: "bold",
         }}
       >
         🚀 Run Sample Deadlock
       </button>
 
-      {status && <p style={{ marginTop: "15px", fontSize: "18px" }}>{status}</p>}
+      {runStatus && (
+        <p
+          style={{
+            marginTop: "20px",
+            color: runStatus.includes("❌") ? "#ff4d4d" : "#00ff99",
+            fontWeight: "bold",
+          }}
+        >
+          {runStatus}
+        </p>
+      )}
     </div>
   );
 }
 
 export default App;
+
 
