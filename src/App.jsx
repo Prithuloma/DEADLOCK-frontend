@@ -6,7 +6,7 @@ function App() {
   const [status, setStatus] = useState("loading");
   const [runStatus, setRunStatus] = useState("");
 
-  // ✅ Check backend health on load
+  // ✅ Check backend health
   useEffect(() => {
     fetch(`${API_BASE_URL}/health`)
       .then(async (res) => {
@@ -26,7 +26,7 @@ function App() {
     setRunStatus("running");
     try {
       const result = await runSampleDeadlock();
-      setRunStatus(`✅ Success: ${result}`);
+      setRunStatus(`✅ ${result}`);
     } catch (err) {
       setRunStatus(`❌ Failed: ${err.message}`);
     }
@@ -35,7 +35,7 @@ function App() {
   return (
     <div
       style={{
-        backgroundColor: "#111",
+        backgroundColor: "#0a0a0a",
         color: "#fff",
         height: "100vh",
         display: "flex",
@@ -58,17 +58,19 @@ function App() {
         {message}
       </p>
 
+      {/* ✅ This button was missing */}
       <button
         onClick={handleRunDeadlock}
         style={{
           backgroundColor: "#ff007f",
           border: "none",
           color: "white",
-          padding: "10px 25px",
+          padding: "12px 28px",
           borderRadius: "8px",
           cursor: "pointer",
           fontSize: "16px",
           fontWeight: "bold",
+          boxShadow: "0 0 10px rgba(255,0,128,0.4)",
         }}
       >
         🚀 Run Sample Deadlock
@@ -90,5 +92,4 @@ function App() {
 }
 
 export default App;
-
 

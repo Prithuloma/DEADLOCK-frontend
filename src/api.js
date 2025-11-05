@@ -1,6 +1,6 @@
-const API_BASE_URL = "https://deadlock-83kw.onrender.com/api";
-
+const API_BASE_URL = "https://deadlock-83kw.onrender.com/api"; 
 export default API_BASE_URL;
+
 
 export async function runSampleDeadlock() {
   try {
