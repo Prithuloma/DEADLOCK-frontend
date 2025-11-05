@@ -27,7 +27,7 @@ function App() {
     try {
       const result = await runSampleDeadlock();
       setRunStatus(`✅ ${result}`);
-      // 🔗 Auto open your live backend dashboard
+      // Open live backend dashboard automatically
       window.open("https://deadlock-83kw.onrender.com", "_blank");
     } catch (err) {
       setRunStatus(`❌ Failed: ${err.message}`);
@@ -44,34 +44,46 @@ function App() {
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
-        fontFamily: "Arial",
+        fontFamily: "Arial, sans-serif",
         textAlign: "center",
       }}
     >
-      <h1>🧠 Java Deadlock Detection Dashboard</h1>
+      <h1 style={{ fontSize: "2.2rem", marginBottom: "20px" }}>
+        🧠 Java Deadlock Detection Dashboard
+      </h1>
 
       <p
         style={{
           color: status === "error" ? "#ff4d4d" : "#00ff99",
-          marginBottom: "20px",
+          marginBottom: "30px",
+          maxWidth: "700px",
         }}
       >
         {message}
       </p>
 
-      {/* 🚀 The missing button is right here */}
+      {/* 🚀 Button to run sample deadlock */}
       <button
         onClick={handleRunDeadlock}
         style={{
           backgroundColor: "#ff007f",
           border: "none",
           color: "white",
-          padding: "12px 28px",
+          padding: "14px 32px",
           borderRadius: "10px",
           cursor: "pointer",
           fontSize: "18px",
           fontWeight: "bold",
-          boxShadow: "0 0 15px rgba(255,0,128,0.4)",
+          boxShadow: "0 0 20px rgba(255,0,128,0.4)",
+          transition: "transform 0.2s ease, box-shadow 0.2s ease",
+        }}
+        onMouseOver={(e) => {
+          e.target.style.transform = "scale(1.05)";
+          e.target.style.boxShadow = "0 0 25px rgba(255,0,128,0.6)";
+        }}
+        onMouseOut={(e) => {
+          e.target.style.transform = "scale(1)";
+          e.target.style.boxShadow = "0 0 20px rgba(255,0,128,0.4)";
         }}
       >
         🚀 Run Sample Deadlock
@@ -80,9 +92,10 @@ function App() {
       {runStatus && (
         <p
           style={{
-            marginTop: "20px",
+            marginTop: "25px",
             color: runStatus.includes("❌") ? "#ff4d4d" : "#00ff99",
             fontWeight: "bold",
+            fontSize: "16px",
           }}
         >
           {runStatus}
