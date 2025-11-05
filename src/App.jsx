@@ -4,15 +4,15 @@ import reactLogo from './assets/react.svg';
 import viteLogo from '/vite.svg';
 import './App.css';
 
-
 function App() {
-  const [count, setCount] = useState(0)
+  const [count, setCount] = useState(0);
+
   useEffect(() => {
-  fetch(`${API_BASE_URL}/api/health`) // Replace with your backend endpoint
-    .then(res => res.text()) // or res.json() depending on backend response
-    .then(data => console.log("✅ Backend connected:", data))
-    .catch(err => console.error("❌ Backend connection error:", err));
-}, []);
+    fetch(`${API_BASE_URL}/api/health`)
+      .then(res => res.text())
+      .then(data => console.log("✅ Backend connected:", data))
+      .catch(err => console.error("❌ Backend connection error:", err));
+  }, []);
 
   return (
     <>
@@ -26,7 +26,7 @@ function App() {
       </div>
       <h1>Vite + React</h1>
       <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
+        <button onClick={() => setCount(count + 1)}>
           count is {count}
         </button>
         <p>
@@ -37,7 +37,7 @@ function App() {
         Click on the Vite and React logos to learn more
       </p>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
