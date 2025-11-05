@@ -1,3 +1,4 @@
+import client from "./websocket";
 import React, { useEffect, useState } from "react";
 import API_BASE_URL, { runSampleDeadlock } from "./api";
 
@@ -19,6 +20,24 @@ function App() {
         setMessage(`❌ Failed to connect: ${err.message}`);
         setStatus("error");
       });
+  }, []);
+
+  // 🔄 Live update listener (WebSocket)
+  useEffect(() => {
+    client.activate();
+
+    client.onConnect = () => {
+      console.log("🟢 Connected to WebSocket. Listening for live updates...");
+      client.subscribe("/topic/deadlocks", (message) => {
+        console.log("📡 Update from backend:", message.body);
+        // Quickest working solution:
+        window.location.reload(); // refreshes dashboard when deadlock changes
+      });
+    };
+
+    return () => {
+      client.deactivate();
+    };
   }, []);
 
   // 🚀 Run Sample Deadlock
@@ -62,7 +81,6 @@ function App() {
         {message}
       </p>
 
-      {/* 🚀 Button to run sample deadlock */}
       <button
         onClick={handleRunDeadlock}
         style={{
@@ -106,3 +124,4 @@ function App() {
 }
 
 export default App;
+
